@@ -165,6 +165,7 @@ export default function App() {
     Array.from({ length: 20 }, (_, i) => ({ t: i, v: 60 + Math.round(Math.random() * 10) }))
   )
   const [toxicity, setToxicity] = useState(0)
+  const [lollygag, setLollygag] = useState(() => 8 + Math.floor(Math.random() * 14))
   const [grassMsg, setGrassMsg] = useState(null)
   const [vibeAnalysis, setVibeAnalysis] = useState(null)
   const [analyzing, setAnalyzing] = useState(false)
@@ -192,6 +193,13 @@ export default function App() {
 
   useEffect(() => {
     const id = setInterval(() => setToxicity(t => +(t + 1.73).toFixed(2)), 60000)
+    return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLollygag(prev => Math.min(100, +(prev + 0.6 + Math.random() * 0.4).toFixed(1)))
+    }, 8000)
     return () => clearInterval(id)
   }, [])
 
@@ -361,8 +369,8 @@ export default function App() {
           </div>
         </Panel>
 
-        {/* Vibe Forecast — col 1-8 */}
-        <Panel title="Vibe Forecast" subtitle="Hourly productivity meteorology · Stable until midnight" className="col-span-8">
+        {/* Vibe Forecast — col 1-6 */}
+        <Panel title="Vibe Forecast" subtitle="Hourly productivity meteorology · Stable until midnight" className="col-span-6">
           {forecast.length === 0 ? (
             <div className="text-xs text-slate-500 text-center py-6">Vibes exhausted for today. Resume tomorrow at 09:00.</div>
           ) : (
@@ -385,8 +393,8 @@ export default function App() {
           )}
         </Panel>
 
-        {/* Meeting Toxicity — col 9-12 */}
-        <Panel title="Meeting Toxicity Index" subtitle="Cumulative damage · +1.73/hr auto-increment" className="col-span-4">
+        {/* Meeting Toxicity — col 7-9 */}
+        <Panel title="Meeting Toxicity Index" subtitle="Cumulative damage · +1.73/hr auto-increment" className="col-span-3">
           <div className="flex flex-col items-center gap-2 py-2">
             <div className={`text-5xl font-bold font-mono ${toxColor}`}>{toxicity.toFixed(2)}</div>
             <div className="text-xs text-slate-500 text-center leading-snug">organizational entropy units<br />accumulated since last reset</div>
@@ -423,6 +431,25 @@ export default function App() {
                 <div className="text-xs text-slate-600 font-mono mt-0.5">{v}</div>
               </div>
             ))}
+          </div>
+        </Panel>
+
+        {/* Lollygagging Index — col 10-12 */}
+        <Panel title="Lollygagging Index" subtitle="Session-accrued · 8-second polling" className="col-span-3">
+          <div className="flex flex-col items-center justify-center gap-2 py-3 flex-1">
+            <div className={`text-5xl font-bold font-mono ${lollygag < 40 ? 'text-emerald-600' : lollygag < 70 ? 'text-amber-600' : 'text-red-600'}`}>
+              {lollygag.toFixed(1)}%
+            </div>
+            <div className="text-xs text-slate-500 text-center leading-snug">of session time spent<br />not doing the thing</div>
+            <div className="w-full bg-slate-200 rounded-full h-1.5 mt-1">
+              <div
+                className={`h-1.5 rounded-full transition-all duration-700 ${lollygag < 40 ? 'bg-emerald-500' : lollygag < 70 ? 'bg-amber-500' : 'bg-red-500'}`}
+                style={{ width: `${lollygag}%` }}
+              />
+            </div>
+            <StatBadge variant={lollygag < 40 ? 'green' : lollygag < 70 ? 'yellow' : 'red'}>
+              {lollygag < 40 ? 'WITHIN TOLERANCE' : lollygag < 70 ? 'APPROACHING THRESHOLD' : 'PLEASE DO SOMETHING'}
+            </StatBadge>
           </div>
         </Panel>
 
