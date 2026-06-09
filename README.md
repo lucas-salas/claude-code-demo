@@ -49,17 +49,17 @@ If you see version numbers, you're good. If you get a "command not found" error,
 
 After installing, close and reopen your terminal, then re-run the version checks above to confirm it worked.
 
-### 2. Get an Anthropic API key
+### 2. Get an Anthropic API key (optional)
 
-The ARIA Vibe Assessment feature requires an API key from Anthropic. If you don't have one:
+The ARIA Vibe Assessment feature requires an API key from Anthropic — skip this step if you don't need ARIA. If you do:
 
 1. Go to [console.anthropic.com](https://console.anthropic.com) and create a free account.
 2. Navigate to **API Keys** and create a new key.
 3. Copy the key — it starts with `sk-ant-...`.
 
-### 3. Set the API key in your environment
+### 3. Set the API key in your environment (optional)
 
-You need to make the key available as an environment variable called `ANTHROPIC_API_KEY`. Do this **before** running the app.
+If you got an API key in step 2, make it available as an environment variable called `ANTHROPIC_API_KEY`. Do this **before** running the app.
 
 - **Mac/Linux** (in the same terminal session you'll use to start the app):
   ```bash
